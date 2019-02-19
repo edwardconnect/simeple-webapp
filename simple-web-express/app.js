@@ -17,13 +17,12 @@ var app = express();
 //connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/testForAuth', { useNewUrlParser: true });
 var db = mongoose.connection;
-
 //handle mongo error
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
   // we're connected!
 });
-
+mongoose.Promise = global.Promise;
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -35,18 +34,18 @@ app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 // express-session
-app.use(session({
-    secret: 'work hard',
-    resave: true,
-    saveUninitialized: false,
-    useNewUrlParser: true,
-    store: new MongoStore({
-      mongooseConnection: db
-    }),
-    cookie: {
-        expires: 30
-    }
-  }));
+// app.use(session({
+//     secret: 'work hard',
+//     resave: true,
+//     saveUninitialized: false,
+//     useNewUrlParser: true,
+//     store: new MongoStore({
+//       mongooseConnection: db
+//     }),
+//     cookie: {
+//         expires: 30
+//     }
+//   }));
 
 app.use('/', routes);
 app.use('/users', users);
